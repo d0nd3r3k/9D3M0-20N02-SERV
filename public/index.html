@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Modular Synth Integrator</title>
+<style type="text/css" media="screen">
+body{
+    background-color: #000;
+    font-family: "Helvetica Neue", Helvetica, Sans-serif;
+    font-weight: 200;
+    font-size: 12px;
+
+    }
+div{
+    display:inline-block;
+    float:left;
+}
+#output{
+    color: #003b00;
+    height: 420px;
+    margin-bottom: 28px;
+    overflow: scroll;
+}
+#canvasDiv{
+    height: 300px;
+    bottom: 10px;
+    position: fixed;
+    right: -80px;
+    transform: scale(1, -1);
+}
+p{
+    word-break: break-all;
+}
+.ctr{
+    color: #333333;
+}
+.scn{
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+<div id="output"></div>
+<div id="canvasDiv">
+        <canvas id="myCanvas" width="700px" height="230px"></canvas>
+</div>
+
+
+<script type="text/javascript">
+    var ws = new WebSocket("ws://dndrk.media.mit.edu:8888/");
+    var outputDiv = document.getElementById("output");
+    var cnv = document.getElementById('myCanvas')
+    var rate = 1000;
+    var s_ctr=0;
+    var arr=[];
+    var str_send="";
+    var clear_c=0;
+    var console = {
+        ctr: 0,
+        log: function (str){
+            str_send="";
+            arr.push(str);
+            outputDiv.innerHTML += "<p><span class='ctr'>"+this.ctr+"</span>\t"+str+"\n"+"</p>";
+            this.ctr++;
+            s_ctr=0;
+        },
+        append: function (str){
+            outputDiv.innerHTML += "<p>"+str+"\n"+"</p>";
+        },
+        inline: function(str){
+            outputDiv.innerHTML += str;
+        },
+        autoscroll: function(){
+            outputDiv.scrollTo(0,outputDiv.scrollHeight);
+        },
+        send: function(){
+            var rm = createRemap(Math.min(...arr),Math.max(...arr),0,4095);
+            if(arr.length>0){
+                var xArr = []
+                for(var i = 0; i<= arr.length; i++){
+                    xArr[i]=i;
+                    str_send+=rm(arr[i])+",";
+                }
+
+                plotData(xArr,arr, cnv)
+                str_send = str_send.slice(0,-5);
+            }
+
+            for(var i=0; i<=s_ctr%128;i++){
+
+                if(i%2==0)
+                    console.inline("\\")
+                else
+                    console.inline("/")
+            }
+            if(clear_c==32){
+                clear_c=0;
+                console.clear();
+            }
+            s_ctr++;
+            clear_c++;
+            console.append(str_send);
+            ws.send(str_send);
+            arr=[];
+            xArr=[];
+            return str_send;
+        },
+        setRate: function(newRate){
+            clearInterval(scrollIntv);
+            clearInterval(sendIntv);
+            scrollIntv = setInterval(console.autoscroll, newRate);
+            sendIntv =setInterval(console.send, newRate);
+        },
+        clear: function(){
+            outputDiv.innerHTML="";
+        }
+    }
+
+    var scrollIntv = setInterval(console.autoscroll, rate);
+    var sendIntv =setInterval(console.send, rate);
+    //setInterval(console.clear, 10000)
+
+    function createRemap(inMin, inMax, outMin, outMax) {
+        return function remaper(x) {
+            return Math.floor((x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin);
+        };
+    }
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    function plotData(arrX, arrY, Canvas){
+        var ctx = Canvas.getContext('2d'), cW= Canvas.offsetWidth, cH= Canvas.offsetHeight
+    	ctx.setTransform(1, 0, 0, 1, 0, 0)
+        ctx.fillStyle="#000000"
+        ctx.fillRect(0,0,cW,cH)
+
+        var minX= Math.min.apply(null, arrX), minY= Math.min.apply(null, arrY)
+        var maxX= Math.max.apply(null, arrX), maxY= Math.max.apply(null, arrY)
+        var wX=maxX-minX, wY=maxY-minY
+        var gW=0.95*cW-0.1*cW, gH=0.9*cH-0.05*cH
+        var facX=gW/wX, facY=gH/wY
+
+        ctx.beginPath()
+        ctx.fillStyle='#003b00'
+        ctx.strokeStyle='#003b00'
+        ctx.lineWidth= 0.002*(cW+cH)
+    	var sqW=0.02*cW, sqH=0.02*cH
+    	var newX, newY
+    	for (var i in arrX){
+    		newX= (arrX[i]-minX)*facX
+    		newY= (arrY[i]-minY)*facY
+        	if (i==0)
+        		ctx.moveTo(newX,newY)
+        	else
+        		ctx.lineTo(newX,newY)
+        }
+        ctx.stroke()
+
+    }
+
+</script>
+</body>
+
+</html>
