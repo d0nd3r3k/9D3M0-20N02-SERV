@@ -7,7 +7,7 @@ const request = require('request');
 
 const env = process.env.NODE_ENV || 'dev';
 const config = require('./config')[env];
-const port = 3000;
+const port = 3333;
 
 const app = express();
 
@@ -32,7 +32,7 @@ const main = require('./controllers/main');
 * LiveModularSynth Websocket Server
 */
 
-const wss = new WebSocket.Server({ port: 8888 });
+const wss = new WebSocket.Server({ port: 7777 });
 
 wss.on('connection', function connection(ws) {
 console.log("New connection made to LiveModularSynth WSS!");

@@ -113,12 +113,29 @@ p{
         },
         clear: function(){
             outputDiv.innerHTML="";
+            arr=[];
         }
     }
 
-    var scrollIntv = setInterval(console.autoscroll, rate);
-    var sendIntv =setInterval(console.send, rate);
+    //var scrollIntv = setInterval(console.autoscroll, rate);
+    //var sendIntv =setInterval(console.send, rate);
     //setInterval(console.clear, 10000)
+    //console.clear();var j=0;for(var i = -1; i<= 1; i+=0.0002){arr[j]=Math.cos(400*i)+Math.cos(j/10)-Math.cos(j/4);j++};console.send()
+    var time = Date.now();
+    var inc= 0;
+
+//    setInterval(createWaveform,100,inc)
+
+
+    function createWaveform(){
+        for(var x=0; x<=3;x++){
+            console.log(Math.sin((time)*x*inc));
+        }
+        inc+=10;
+        console.append("lvl: "+ inc);
+    }
+
+
 
     function createRemap(inMin, inMax, outMin, outMax) {
         return function remaper(x) {
