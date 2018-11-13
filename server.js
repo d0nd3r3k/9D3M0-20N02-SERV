@@ -7,7 +7,7 @@ const request = require('request');
 
 const env = process.env.NODE_ENV || 'dev';
 const config = require('./config')[env];
-const port = 3333;
+const port = 3003;
 
 const app = express();
 
