@@ -41,7 +41,7 @@ console.log("New connection made to LiveModularSynth WSS!");
     main.sendToBuffer(message);
     wss.clients.forEach(function each(client) {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
-            client.send(message);
+            client.send("101");
           }
         });
     });
