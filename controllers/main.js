@@ -6,5 +6,6 @@ exports.sendToBuffer = function(message){
 }
 
 exports.getData = function(req, res){
+    res.set('Content-Type', 'application/octet-stream');
     res.send(buff);
 };
