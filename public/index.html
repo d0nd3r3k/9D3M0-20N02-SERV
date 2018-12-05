@@ -1,50 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Modular Synth Integrator</title>
+<title>aREPL</title>
 <style type="text/css" media="screen">
 body{
-    background-color: #000;
+    background-color: #242424;
     font-family: "Helvetica Neue", Helvetica, Sans-serif;
     font-weight: 200;
     font-size: 12px;
-
+    color: #D9D9D9;
+    overflow-y: hidden;
     }
 div{
     display:inline-block;
     float:left;
 }
+h2{
+    margin-bottom: 4px;
+    margin-top: 0;
+}
 #output{
-    color: #003b00;
+    color: #D9D9D9;
     height: 420px;
-    margin-bottom: 28px;
     overflow: scroll;
 }
+#output p{
+    margin-top:0;
+}
 #canvasDiv{
-    height: 300px;
-    bottom: 10px;
-    position: fixed;
-    right: -80px;
+    margin-bottom: 20px;
     transform: scale(1, -1);
 }
 p{
     word-break: break-all;
+    width: 690px;
 }
+
 .ctr{
     color: #333333;
 }
 .scn{
     text-align: center;
 }
+.container{
+    position: relative;
+}
+canvas{
+    margin-left: 30px;
+}
 </style>
 </head>
 
 <body>
-<div id="output"></div>
-<div id="canvasDiv">
-        <canvas id="myCanvas" width="700px" height="230px"></canvas>
-</div>
+<h2><span style="color:#9A81D2;">analog</span> <span style="color:#5DAFD7;">Read</span>.<span style="color:#D2C057;">Eval</span>.<span style="color:#A1F7B5;">Print</span>.<span style="color:#9A7FD4;">Loop</span></h2>
+<div class="container">
 
+    <section id="canvasDiv">
+            <canvas id="myCanvas" width="690px" height="200px"></canvas>
+    </section>
+<section id="output">
+</section>
+
+
+</div>
 
 <script type="text/javascript">
     var ws = new WebSocket("ws://force.media.mit.edu:7777/");
@@ -53,6 +71,7 @@ p{
     var arr=[];
     var xArr = []
     var str_send="";
+    var clrs = ["#9A81D2","#5DAFD7","#D2C057","#A1F7B5","#9A7FD4"];
 
     var console = {
         append: function (str){
@@ -74,7 +93,7 @@ p{
 
                 for(var i = 0; i<= arr.length; i++){
                     xArr[i]=i;
-                    str_send+=rm(arr[i])+",";
+                    str_send+="<span style='color:"+clrs[getRandomInt(clrs.length)]+"'>"+rm(arr[i])+",</span>";
                 }
 
                 plotData(xArr,arr, cnv)
@@ -106,7 +125,7 @@ p{
     function plotData(arrX, arrY, Canvas){
         var ctx = Canvas.getContext('2d'), cW= Canvas.offsetWidth, cH= Canvas.offsetHeight
     	ctx.setTransform(1, 0, 0, 1, 0, 0)
-        ctx.fillStyle="#000000"
+        ctx.fillStyle="#242424";
         ctx.fillRect(0,0,cW,cH)
 
         var minX= Math.min.apply(null, arrX), minY= Math.min.apply(null, arrY)
@@ -116,8 +135,8 @@ p{
         var facX=gW/wX, facY=gH/wY
 
         ctx.beginPath()
-        ctx.fillStyle='#003b00'
-        ctx.strokeStyle='#003b00'
+        ctx.fillStyle=clrs[getRandomInt(clrs.length)];
+        ctx.strokeStyle=clrs[getRandomInt(clrs.length)];
         ctx.lineWidth= 0.002*(cW+cH)
     	var sqW=0.02*cW, sqH=0.02*cH
     	var newX, newY
@@ -132,6 +151,8 @@ p{
         ctx.stroke()
 
     }
+
+
 
 </script>
 </body>
