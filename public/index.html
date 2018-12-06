@@ -96,8 +96,8 @@ canvas{
 
                 for(var i = 0; i<= arr.length; i++){
                     xArr[i]=i;
-                    str_send+="<span style='color:"+clrs[getRandomInt(clrs.length)]+"'>"+rm(arr[i])+",</span>";
-
+                    //str_send+="<span style='color:"+clrs[getRandomInt(clrs.length)]+"'>"+rm(arr[i])+",</span>";
+                    str_send+=rm(arr[i]);
                     //str_send+="<span style='color:"+'#'+(~~(Math.random()*16777215)).toString(16)+"'>"+rm(arr[i])+",</span>";
                 }
 
