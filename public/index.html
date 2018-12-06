@@ -52,7 +52,9 @@ canvas{
 </head>
 
 <body>
-<h2><span style="color:#9A81D2;">analog</span> <span style="color:#5DAFD7;">Read</span>.<span style="color:#D2C057;">Eval</span>.<span style="color:#A1F7B5;">Print</span>.<span style="color:#9A7FD4;">Loop</span></h2>
+<!--<h2><span style="color:#9A81D2;">analog</span> <span style="color:#5DAFD7;">Read</span>.<span style="color:#D2C057;">Eval</span>.<span style="color:#A1F7B5;">Print</span>.<span style="color:#9A7FD4;">Loop</span></h2>-->
+<!--<h2><span style="color:#9A81D2;">Z</span><span style="color:#5DAFD7;">o</span><span style="color:#D2C057;">n</span><span style="color:#A1F7B5;">o</span><span style="color:#9A7FD4;">Z</span> <span style="font-size:12px; font-weight:300;">analog Read Eval Print Loop</span></h2>-->
+<h2><span style="color:#d9d9d97a;">2</span><span style="color:#d9d9d95c;">0</span><span style="color:#FEFEFE;">N</span><span style="color:#d9d9d95c;">0</span><span style="color:#d9d9d97a;">2</span> <span style="font-size:12px; font-weight:300;">analog Read Eval Print Loop</span></h2>
 <div class="container">
 
     <section id="canvasDiv">
@@ -71,8 +73,9 @@ canvas{
     var arr=[];
     var xArr = []
     var str_send="";
-    var clrs = ["#9A81D2","#5DAFD7","#D2C057","#A1F7B5","#9A7FD4"];
-
+    //var clrs = ["#BE2700","#9F180F","#D9D9D9"];
+    //var clrs = ["#9A81D2","#5DAFD7","#D2C057","#A1F7B5","#9A7FD4"];
+    var clrs = ["#FEFEFE","#d9d9d97a","#d9d9d95c","#d9d9d93d"];
     var console = {
         append: function (str){
             outputDiv.innerHTML += "<p>"+str+"\n"+"</p>";
@@ -94,6 +97,8 @@ canvas{
                 for(var i = 0; i<= arr.length; i++){
                     xArr[i]=i;
                     str_send+="<span style='color:"+clrs[getRandomInt(clrs.length)]+"'>"+rm(arr[i])+",</span>";
+
+                    //str_send+="<span style='color:"+'#'+(~~(Math.random()*16777215)).toString(16)+"'>"+rm(arr[i])+",</span>";
                 }
 
                 plotData(xArr,arr, cnv)
@@ -137,6 +142,8 @@ canvas{
         ctx.beginPath()
         ctx.fillStyle=clrs[getRandomInt(clrs.length)];
         ctx.strokeStyle=clrs[getRandomInt(clrs.length)];
+        //ctx.fillStyle='#'+(~~(Math.random()*16777215)).toString(16);
+        //ctx.strokeStyle='#'+(~~(Math.random()*16777215)).toString(16);
         ctx.lineWidth= 0.002*(cW+cH)
     	var sqW=0.02*cW, sqH=0.02*cH
     	var newX, newY
